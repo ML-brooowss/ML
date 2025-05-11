@@ -1,4 +1,4 @@
 **/.DS_store
 **/.
 **/_pycache_
-/items_with_embeddings.csv
+./items_with_embeddings.csv
