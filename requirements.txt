@@ -4,3 +4,10 @@ openpyxl
 ipykernel
 requests
 kaggle
+google-genai
+scikit-learn
+matplotlib
+google-generativeai
+ipywidgets
+streamlit
+plotly
