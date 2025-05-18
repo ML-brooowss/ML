@@ -2,3 +2,6 @@
 **/.
 **/_pycache_
 ./items_with_embeddings.csv
+./config.py
+./ISBNdb_api_call_Daniel.csv
+./config
