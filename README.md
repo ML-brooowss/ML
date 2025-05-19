@@ -7,10 +7,10 @@ Kaggle competition - git repository
 user-user CF	item-item CF	Any other technique
 Precision@10			
 Recall@10			
-Report your Exploratory Data Analysis (EDA) on the interactions data and the items metadata.
-Which is the best model?
-Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
-Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
+* Report your Exploratory Data Analysis (EDA) on the interactions data and the items metadata.
+* Which is the best model?
+* Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
+* Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
 Have a position on the leaderboard of this competition, with score better than 0.1452.
 
 <table border="1" style="border-collapse: collapse; text-align: center; width: 100%;">

@@ -11,3 +11,5 @@ google-generativeai
 ipywidgets
 streamlit
 plotly
+bertopic
+hf_xet
