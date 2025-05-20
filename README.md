@@ -9,7 +9,7 @@ Precision@10
 Recall@10			
 * Report your Exploratory Data Analysis (EDA) on the interactions data and the items metadata.
 
-![Non-missing values per source](readme_images/non_missing_plot.png)
+![Non-missing values per source](readme_images/non_missing_data_plot.png)
 
 * Which is the best model?
 * Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
