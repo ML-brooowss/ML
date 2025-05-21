@@ -12,6 +12,14 @@ recommendations_dict = load_recommendations()
 df_books["i"] = df_books["i"].astype(str)
 interactions["i"] = interactions["i"].astype(str)
 
+# Initialize session states for show_recommendations and checkout_done
+if 'show_recommendations' not in st.session_state:
+    st.session_state.show_recommendations = False
+if 'checkout_done' not in st.session_state:
+    st.session_state.checkout_done = False
+if 'borrowed_books' not in st.session_state:
+    st.session_state.borrowed_books = []
+
 # --- AUTHENTICATION STEP ---
 if 'customer_authenticated' not in st.session_state:
     st.session_state.customer_authenticated = False
@@ -30,8 +38,10 @@ if not st.session_state.customer_authenticated:
         if login_button:
             st.session_state.selected_customer = selected_customer
             st.session_state.customer_authenticated = True
-            st.rerun()  # 🔄 force rerun immediately
+            st.rerun()  # force rerun immediately
+
 else:
+    # Logout form
     with st.form("logout_form"):
         st.write(f"Logged in as customer: **{st.session_state.selected_customer}**")
         logout_button = st.form_submit_button("Logout")
@@ -39,12 +49,12 @@ else:
         if logout_button:
             st.session_state.customer_authenticated = False
             st.session_state.selected_customer = None
-            st.rerun()  # 🔄 force rerun immediately
+            st.session_state.borrowed_books = []
+            st.rerun()()  # force rerun immediately
 
     selected_customer = st.session_state.selected_customer
 
-    # Now show your tabs and app content
-    tab1, tab2 = st.tabs(["📚 Recommender", "📊 About & EDA"])
+    tab1, tab2, tab3 = st.tabs(["📚 Recommender", "🛒 Borrow Basket","📊 About & EDA"])
 
     with tab1:
         st.title("📚 Book Recommender System")
@@ -53,7 +63,6 @@ else:
 
         st.markdown(f"Logged in as customer: **{selected_customer}**")
 
-        # Initialize session state for shuffle
         shuffle_clicked = st.button("🔀 Shuffle Previously Read Books")
 
         if 'recent_reads' not in st.session_state or shuffle_clicked:
@@ -83,27 +92,23 @@ else:
                         """, unsafe_allow_html=True)
 
                         img_url = book["image"]
-                        canonical_link = book.get("CanonicalLink", None)
+                        image_height = 500
 
                         if pd.notnull(img_url):
-                            st.image(img_url, use_container_width=True)
+                            st.markdown(f"""
+                                <div style="height:{image_height}px; display:flex; align-items:center; justify-content:center; margin-bottom:8px;">
+                                    <img src="{img_url}" style="max-height:{image_height}px; object-fit:contain;" />
+                                </div>
+                            """, unsafe_allow_html=True)
                         else:
-                            st.markdown("""
-                                <div style='height: 350px; display: flex; align-items: center; justify-content: center; 
-                                            text-align: center; border: 1px solid #ccc; border-radius: 8px;
-                                            background-color: #f9f9f9; padding: 10px; color: black;'>
+                            st.markdown(f"""
+                                <div style='height:{image_height}px; display:flex; align-items:center; justify-content:center;
+                                            text-align:center; border:1px solid #ccc; border-radius:8px;
+                                            background-color:#f9f9f9; padding:10px; color:black; margin-bottom:8px;'>
                                     No image available
                                 </div>
                             """, unsafe_allow_html=True)
 
-                        if pd.notnull(canonical_link):
-                            st.markdown(f"""
-                                <div style='margin-top: 8px; text-align: center;'>
-                                    <a href='{canonical_link}' target='_blank'>🔗 View on Google Books</a>
-                                </div>
-                            """, unsafe_allow_html=True)
-
-                        # Info expander
                         with st.expander("📖 More Info"):
                             st.markdown(f"""
                             **Author**: {book['author_clean'] if pd.notnull(book['author_clean']) else 'Unknown'}
@@ -114,63 +119,115 @@ else:
                             
                             **Description**:  
                             {book['Description'] if pd.notnull(book['Description']) else 'No description available for this book.'}
+
+                            **Subjects**: {book['Subjects'] if pd.notnull(book['Subjects']) else 'N/A'}
+    
+                            **Link**: {"[🔗 View on Google Books](" + book['CanonicalLink'] + ")" if pd.notnull(book.get('CanonicalLink')) else '_Not available_'}
                             """)
 
-            st.markdown("<div style='margin-bottom: 40px;'></div>", unsafe_allow_html=True)
+                        # Borrow Again button BELOW the expander
+                        if book['i'] not in st.session_state.borrowed_books:
+                            if st.button(f"📚 Borrow Again: {title}", key=f"borrow_again_{book['i']}"):
+                                st.session_state.borrowed_books.append(book['i'])
+                                st.success(f"Added '{title}' to your borrow basket!")
 
-            # Recommendations
-            if st.button("Show Recommendations"):
-                st.subheader("Recommended books 📖")
-                recommended_ids = recommendations_dict.get(selected_customer, "").split(" ")
+        # Show Recommendations button only AFTER login
+        if st.button("Show Recommendations"):
+            st.session_state.show_recommendations = True
 
-                recommended_books = df_books[df_books["i"].isin(recommended_ids)]
+        if st.session_state.show_recommendations:
+            st.subheader("Recommended books 📖")
+            recommended_ids = recommendations_dict.get(selected_customer, "").split(" ")
+            recommended_books = df_books[df_books["i"].isin(recommended_ids)]
 
-                if recommended_books.empty:
-                    st.warning("No recommendations available for this customer.")
-                else:
-                    for row in range(0, len(recommended_books), 5):
-                        cols = st.columns(5)
-                        for i, (_, book) in enumerate(recommended_books.iloc[row:row+5].iterrows()):
-                            with cols[i]:
+            if recommended_books.empty:
+                st.warning("No recommendations available for this customer.")
+            else:
+                for row in range(0, len(recommended_books), 5):
+                    cols = st.columns(5)
+                    for i, (_, book) in enumerate(recommended_books.iloc[row:row+5].iterrows()):
+                        with cols[i]:
+                            st.markdown(f"""
+                                <div style='height: 70px; overflow: hidden; text-align: center; font-weight: bold;'>
+                                    {book['title_clean']}
+                                </div>
+                            """, unsafe_allow_html=True)
+
+                            img_url = book["image"]
+                            image_height = 500
+
+                            if pd.notnull(img_url):
                                 st.markdown(f"""
-                                    <div style='height: 70px; overflow: hidden; text-align: center; font-weight: bold;'>
-                                        {book['title_clean']}
+                                    <div style="height:{image_height}px; display:flex; align-items:center; justify-content:center; margin-bottom:8px;">
+                                        <img src="{img_url}" style="max-height:{image_height}px; object-fit:contain;" />
+                                    </div>
+                                """, unsafe_allow_html=True)
+                            else:
+                                st.markdown(f"""
+                                    <div style='height:{image_height}px; display:flex; align-items:center; justify-content:center;
+                                                text-align:center; border:1px solid #ccc; border-radius:8px;
+                                                background-color:#f9f9f9; padding:10px; color:black; margin-bottom:8px;'>
+                                        No image available
                                     </div>
                                 """, unsafe_allow_html=True)
 
-                                img_url = book["image"]
-                                canonical_link = book["CanonicalLink"]
+                            with st.expander("📖 More Info"):
+                                st.markdown(f"""
+                                **Author**: {book['author_clean'] if pd.notnull(book['author_clean']) else 'Unknown'}
 
-                                if pd.notnull(img_url):
-                                    st.image(img_url, use_container_width=True)
-                                else:
-                                    st.markdown("""
-                                        <div style='height: 350px; display: flex; align-items: center; justify-content: center; 
-                                                    text-align: center; border: 1px solid #ccc; border-radius: 8px;
-                                                    background-color: #f9f9f9; padding: 10px; color: black;'>
-                                            No image available
-                                        </div>
-                                    """, unsafe_allow_html=True)
+                                **Published**: {book['PublishedDate'] if pd.notnull(book['PublishedDate']) else 'N/A'}  
+                                
+                                **Language**: {book['Language'] if pd.notnull(book['Language']) else 'N/A'}
 
-                                if pd.notnull(canonical_link):
-                                    st.markdown(f"""
-                                        <div style='margin-top: 8px; text-align: center;'>
-                                            <a href='{canonical_link}' target='_blank'>🔗 View on Google Books</a>
-                                        </div>
-                                    """, unsafe_allow_html=True)
-                                with st.expander("📖 More Info"):
-                                    st.markdown(f"""
-                                    **Author**: {book['author_clean'] if pd.notnull(book['author_clean']) else 'Unknown'}
+                                **Description**:  
+                                {book['Description'] if pd.notnull(book['Description']) else 'No description available for this book.'}
 
-                                    **Published**: {book['PublishedDate'] if pd.notnull(book['PublishedDate']) else 'N/A'}  
-                                    
-                                    **Language**: {book['Language'] if pd.notnull(book['Language']) else 'N/A'}
+                                **Subjects**: {book['Subjects'] if pd.notnull(book['Subjects']) else 'N/A'}
+    
+                                **Link**: {"[🔗 View on Google Books](" + book['CanonicalLink'] + ")" if pd.notnull(book.get('CanonicalLink')) else '_Not available_'}
+                                """)
 
-                                    **Description**:  
-                                    {book['Description'] if pd.notnull(book['Description']) else 'No description available for this book.'}
-                                    """)
+                            # Borrow button BELOW the expander
+                            if book['i'] not in st.session_state.borrowed_books:
+                                if st.button(f"📚 Borrow: {book['title_clean']}", key=f"borrow_{book['i']}"):
+                                    st.session_state.borrowed_books.append(book['i'])
+                                    st.success(f"Added '{book['title_clean']}' to your borrow basket!")
 
     with tab2:
+        st.title("🛒 Borrow Basket")
+        if st.session_state.borrowed_books:
+            borrowed_books_df = df_books[df_books["i"].isin(st.session_state.borrowed_books)]
+
+            for _, book in borrowed_books_df.iterrows():
+                st.markdown(f"### {book['title_clean']}")
+                img_url = book["image"]
+                image_height = 100
+
+                if pd.notnull(img_url):
+                    st.image(img_url, use_container_width=False, width=150)
+                else:
+                    st.write("No image available")
+
+                st.markdown(f"**Author**: {book['author_clean'] if pd.notnull(book['author_clean']) else 'Unknown'}")
+                st.markdown(f"**Published**: {book['PublishedDate'] if pd.notnull(book['PublishedDate']) else 'N/A'}")
+                st.markdown("---")
+
+            if st.button("✅ Checkout"):
+                st.session_state.borrowed_books.clear()
+                st.balloons()
+                st.session_state.checkout_done = True
+                st.rerun()
+
+        else:
+            st.info("Your borrow basket is empty.")
+
+        if st.session_state.checkout_done:
+            st.success("Thank you for borrowing! Your basket is now empty.")
+            st.balloons()
+            # Reset flag so message shows only once
+            st.session_state.checkout_done = False
+
+    with tab3:
         st.title("📊 About This Recommender")
         st.header("Exploratory Data Analysis")
         st.markdown("""
