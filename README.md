@@ -66,6 +66,14 @@ The final results of our data enhancing techniques are shown in the figure here 
 
 ![Final non missing data](readme_images/non_missing_data_plot.png)
 
+## Data enhancing extension
+
+In addition to the previous enhancing methods, we used BERTopics to extract the topics for each document from our corpus. To do so, we used the title and the description of each book. First, the algorithm uses a pretrained BERT model to capture semantic meaning of the text down to its core. Then, we used the built-in UMAP dimensionality reduction function to cluster the topics into 25 topics. The results are as follow:
+
+![Reduced topic distributions](readme_images/reduced_topic_distribution.png)
+
+We see that the large majority of the topics are unidentified by the model. The most prominent topics seem to be feminism, psychology and academic research. We could have manually labelled the clusters to make them more human-friendly, but decided to keep them as such. In fact, we used these topics for our recommender system as they were later on using embeddings, as seen in the next section. An interesting extension to our work would be to run cross validation to find the optimal number of topics for the embeddings.
+
 * Which is the best model?
 * Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
 * Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
