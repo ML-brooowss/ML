@@ -9,7 +9,28 @@ Precision@10
 Recall@10			
 * Report your Exploratory Data Analysis (EDA) on the interactions data and the items metadata.
 
+## 📊 Datasets Overview
+
+| Metric              | Count   |
+|---------------------|--------:|
+| Total interactions  | 87,047  |
+| Unique items        | 15,291  |
+| Unique users        | 7,838   |
+
+Let's look at the data we have for the interactions.
+![Non-missing values per source](readme_images/distribution_interactions_per_user.png)
+
+Another couple of key metrics:
+* The average number of interactions between a user and books is 11
+* The median number of interactions is 6
+
+We see that the distribution of interactions are positively skewed, with users having up to 385 interactions with reading materials!
+
+Let's now look at the data we have for the items. The first thing to look at is how complete our dataset is, or how much missing data it has. 
+
 ![Non-missing values per source](readme_images/non_missing_data_plot.png)
+
+<iframe src="topic_map_full.html" width="100%" height="600"></iframe>
 
 * Which is the best model?
 * Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
