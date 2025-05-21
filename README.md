@@ -18,7 +18,7 @@ Recall@10
 | Unique users        | 7,838   |
 
 Let's look at the data we have for the interactions.
-![Non-missing values per source](readme_images/distribution_interactions_per_user.png)
+![Distribution of interactions per user](readme_images/distribution_interactions_per_user.png)
 
 Another couple of key metrics:
 * The average number of interactions between a user and books is 11
@@ -26,11 +26,45 @@ Another couple of key metrics:
 
 We see that the distribution of interactions are positively skewed, with users having up to 385 interactions with reading materials!
 
-Let's now look at the data we have for the items. The first thing to look at is how complete our dataset is, or how much missing data it has. 
+Let's now look at the data we have for the items. The first thing to do was to perform a bit of data cleaning by:
+* Extracting the first valid ISBN from the 'ISBN Valid' column 
+* Cleaning the titles as they had a trailing '/' and to support our data enhancing
+* Cleaning the authors from birth and death years to ensure a consistent data formatting.
+
+The next step was to look at is how complete our dataset is, or how much missing data it has. 
 
 ![Non-missing values per source](readme_images/non_missing_data_plot.png)
 
-<iframe src="topic_map_full.html" width="100%" height="600"></iframe>
+We see that the only datapoints that we consistently have throughout all the items is the index (i) and the title, and publishers for almost all of them. Otherwise, roughly 5% of the ISBNs, 15% Authors and 17% of Subjects are missing.
+
+There are also many other data points that we don't have: language, book description, publication date and perhaps information about the book covers. 
+
+How could we possibly remedy this and enhance the data we have access to?
+
+## Data enhancing 
+
+### Google Books API
+
+The data enhancing for this step was composed of two parts. First, looking up books based on their first valid ISBN to extract the following missing entries:
+* Book Description
+* Publisher
+* Subjects
+
+As well as new data points:
+* Google's Canonical Link, or the permanent link to the Google Books entry of the book. This will possibly useful for our UI later.
+* Google's Image Link, or the permanent link to the book's cover. This will also possibly useful for our UI later.
+* Language of the book, possibly useful for our embeddings later.
+* Publication date of the book, possibly useful for our embeddings later.
+
+Second, we also looked up books by their title to try to extract their ISBN as well as all the other datapoints mentioned above. In doing so, we enhance the potential entries we find using our second data enhancing method. 
+
+### ISBN Database API
+
+The same datapoints as above were extracted using the ISBN Database. We combined all these newly found datapoints in the following way: first priority for all the fields to the original dataframe, then Google API entries, then ISBN Database entries. An exception to that is for the Image Link, which turned out being fallacious for many entries. We therefore gave priority to the Image link provided by the ISBN Database. When running our models, we tried giving the opposite priority to the two enhanced database, which did not change results by much. However, we made the choice to keep the entries from the original dataset intact, considering that it is the ground truth.
+
+The final results of our data enhancing techniques are shown in the figure here below. The light blue bar indicates the original dataset, the next two bars the results of the individual data enhancing techniques and the last bar indicating the resulting dataframe after the combination of both methods. We're able to achieve remarkable results across all dimensions, hitting almost 80% and above for all the data points. 
+
+![Final non missing data](readme_images/non_missing_data_plot.png)
 
 * Which is the best model?
 * Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
