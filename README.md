@@ -230,6 +230,6 @@ Looking at the sample of books that were borrowed by the user here below, we see
 To further improve the recommender system, several enhancements could be explored. 
 1) We could fine-tune the hybrid model performing a computationally heavy full GridSearch. We could also try to use dynamic weight optimization techniques such as Bayesian search or gradient-based learning instead of static grid search.
 2) We could also experiment with neural network-based recommenders, such as neural collaborative filtering or deep learning models that can learn complex interaction patterns between users and items.
-3) Another avenue is to test alternative embedding sources, including more recent models from the HuggingFace embedding leaderbord like GritLM-7b or Cohere.
+3) Another avenue is to test alternative embedding sources, including more recent models from the HuggingFace embedding leaderbord like GritLM-7b or Cohere (https://huggingface.co/spaces/mteb/leaderboard). 
 4) Lastly, we could also try to incorporating temporal data (e.g., recency of interactions) and user demographic information to personalize recommendations more effectively.
 
