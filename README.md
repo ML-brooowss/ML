@@ -127,8 +127,8 @@ Collaborative filtering makes recommendations by analyzing past user behavior (e
 - **K-Nearest Neighbors (KNN)**:
 - With the goal of improving and evaluating the User-based collaborative filtering recommender system, we implemented a KNN-based variant using scikit-learn’s `NearestNeighbors`. 
 Instead of relying on a full similarity matrix (which is rather computationally heavy and noisy), the knn approach identifies only the top-*k* most similar items for each prediction.
-We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean -*Precision@10*-. We visualized the results with error bars to reflect performance variability across different random splits [see graph]. We found optimal performance at **k = 70**. 
-**Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
+We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean *Precision@10*. We visualized the results with error bars to reflect performance variability across different random splits [see graph]. We found optimal performance at *k = 70*. 
+- **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
 
 ##### Item-Based CF
 
@@ -136,17 +136,15 @@ We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* rando
 - **Baseline Similarity**: Cosine similarity  
   - Measures the angle between item vectors; suitable for sparse, implicit data.
 - **K-Nearest Neighbors (KNN)**:
-  - As in the User-Based CF case, we tested again different values for k (number of neighbors) and found optimal performance at-*k = 70*-.
+  - As in the User-Based CF case, we tested again different values for k (number of neighbors) and found optimal performance at*k = 70*.
 - **Pearson Correlation**: Not used because it's more effective for **explicit ratings** (e.g., from 1–5). Pearson correlation adjusts for user bias.
-
-**Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting ([in line with academic literature](https://link.springer.com/chapter/10.1007/978-981-10-7398-4_37)).
+- **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting ([in line with academic literature](https://link.springer.com/chapter/10.1007/978-981-10-7398-4_37)).
 
 ---
 
 #### 2. Content-Based Filtering (CBF)
 
 Content-based filtering recommends books that are similar in content to those the user liked previously. This method does not depend on what other users did.
-
 To compare book content, we transformed textual metadata (title, author, description, etc.) into **embeddings**: numerical vector representations of the semantic meaning of a piece of text that allow us to compute similarity.
 
 ##### Embedding Techniques Used
@@ -184,8 +182,7 @@ hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
 ```
 
 We did not perform full grid search or cross-validation due to computational limits, but used **simplified tuning** to demonstrate the concept.
-
-We found the highest precision when combining BERT, TF-IDF Google, and item-CF. This is the model our current recommender is running on. Result of the simplified grid search showed:
+The highest precision was found when combining BERT, TF-IDF Google, and item-CF. This is the model our current recommender is running on. Result of the simplified grid search showed:
 
 _**[Insert table: highlight best combo]**_
 
