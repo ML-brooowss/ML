@@ -108,7 +108,7 @@ In addition to the previous enhancing methods, we used BERTopics to extract the 
 
 We see that the large majority of the topics are unidentified by the model. The most prominent topics seem to be feminism, psychology and academic research. We could have manually labelled the clusters to make them more human-friendly, but decided to keep them as such to not introduce bias. In fact, we used these topics for our recommender system by including the extracted keywords per topic in embeddings, as seen in the next section. The results were An interesting extension to our work would be to run cross validation to find the optimal number of topics for the embeddings.
 
-### Recommendation system techniques
+### Recommendation system techniques [see RecommenderSystem.py]
 #### 1. Collaborative Filtering (CF)
 
 Collaborative filtering makes recommendations by analyzing past user behavior (e.g., which books were read) and identifying similarities between users or items.
@@ -118,10 +118,8 @@ Collaborative filtering makes recommendations by analyzing past user behavior (e
 - **Concept**: Recommend books liked by users who are similar to the target user.
 - **Baseline similarity**: Cosine similarity  
   - Measures the angle between item vectors; suitable for sparse, implicit data.
-- **K-Nearest Neighbors (KNN)**:
-- With the goal of improving and evaluating the User-based collaborative filtering recommender system, we implemented a KNN-based variant using scikit-learn’s `NearestNeighbors`. 
-Instead of relying on a full similarity matrix (which is rather computationally heavy and noisy), the knn approach identifies only the top-*k* most similar items for each prediction.
-We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean *Precision@10*. We visualized the results with error bars to reflect performance variability across different random splits. We found optimal performance at k = 60.
+- **K-Nearest Neighbors (KNN)**: With the goal of improving and evaluating the User-based collaborative filtering recommender system, we implemented a KNN-based variant using scikit-learn’s `NearestNeighbors`. Instead of relying on a full similarity matrix (which is rather computationally heavy and noisy), the knn approach identifies only the top-*k* most similar items for each prediction. We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean *Precision@10*. We visualized the results with error bars to reflect performance variability across different random splits. We found optimal performance at k = 60.
+[see CF_w.knn.ipynb]
 
 ![user-based knn precision](readme_images/user_knn_precision_plot.png)
 - **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
@@ -169,7 +167,7 @@ To compare book content, we transformed textual metadata (title, author, descrip
 - **How**: Uses pretrained transformer models like BERT, but more advanced.
 - **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.
 
-#### 3. Hybrid Recommender System
+#### 3. Hybrid Recommender System [see Hybrid_gridsearch.ipynb]
 
 We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices. We did this to leverage the strengths of each system while mitigating their individual weaknesses. Collaborative filtering captures patterns from user behavior but struggles with new or sparsely rated items, while content-based filtering can recommend new or niche items using item attributes but often lacks diversity. By blending them together, we ensure that recommendations remain accurate even when user interaction data is limited, while also introducing semantic richness and personalization based on content.
 
