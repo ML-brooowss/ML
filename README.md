@@ -122,7 +122,7 @@ Collaborative filtering makes recommendations by analyzing past user behavior (e
 - **Baseline similarity**: Cosine similarity  
   - Measures the angle between item vectors; suitable for sparse, implicit data.
 - **K-Nearest Neighbors (KNN)**: With the goal of improving and evaluating the User-based collaborative filtering recommender system, we implemented a KNN-based variant using scikit-learn’s `NearestNeighbors`. Instead of relying on a full similarity matrix (which is rather computationally heavy and noisy), the knn approach identifies only the top-*k* most similar items for each prediction. We tested multiple *k* values (ranging from 10 to 100 neighbors) (note: ideally we would have used cross-validation to check this, but due to computational limitations we were precluded from such analysis). For each configuration, we measured the mean *Precision@10*. We visualized the results and found optimal performance at k = 60.
-[see CF_w.knn.ipynb]
+[see CF_w.knn.ipynb](./CF_w.knn.ipynb)
 
 ![user-based knn precision](readme_images/user_knn_precision_plot.png)
 - **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
