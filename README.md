@@ -38,11 +38,15 @@ Before we explain these different techniques, let's have an overview of the data
 
 To get a feeling of the amount of data that we are working with, let's look at the total number of interactions, the number of unique items (or books) and the number of unique users.
 
+<div align="center">
+
 | Metric              | Count   |
 |---------------------|--------:|
 | Total interactions  | 87,047  |
 | Unique items        | 15,291  |
 | Unique users        | 7,838   |
+
+</div>
 
 We're dealing with a dataset of a reasonable size, while it still represents much more data than could be handled by hand for sure. Let's now look at the data we have for the interactions.
 
