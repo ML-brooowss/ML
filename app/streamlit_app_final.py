@@ -257,6 +257,7 @@ else:
         with st.expander("1. Collaborative Filtering (User/User & Item/Item)"):
             st.markdown("""
             **User-Based CF:**
+<<<<<<< HEAD
                         
             - **Concept**: Recommend books liked by users who are similar to the target user.
                         
@@ -276,6 +277,20 @@ else:
                         
             - **Pearson Correlation**: Not used because it's more effective for **explicit ratings** (e.g., a book rating from 1–5). Pearson correlation adjusts for user bias.
                         
+=======
+            - **Concept**: Recommend books liked by users who are similar to the target user.
+            - **Baseline similarity**: Cosine similarity: measures the angle between user vectors; suitable for sparse, implicit data.
+            - **K-Nearest Neighbors (KNN)**: With the goal of improving and evaluating the User-based collaborative filtering recommender system, we implemented a KNN-based variant using scikit-learn’s `NearestNeighbors`. 
+Instead of relying on a full similarity matrix (which is rather computationally heavy and noisy), the knn approach identifies only the top-*k* most similar items for each prediction.
+We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean *Precision@10*. We visualized the results with error bars to reflect performance variability across different random splits [see graph]. We found optimal performance at **k = 70**. 
+            - **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
+
+            **Item-Based CF:**
+            - **Concept**: Recommend books similar to those a user already interacted with.
+            - **Baseline Similarity**: Cosine similarity, which measures the angle between item vectors; suitable for sparse, implicit data.
+            - **K-Nearest Neighbors (KNN)**: As in the User-Based CF case, we tested again different values for k (number of neighbors) and found optimal performance at-*k = 70*-.
+            - **Pearson Correlation**: Not used because it's more effective for **explicit ratings** (e.g., a book rating from 1–5). Pearson correlation adjusts for user bias.
+>>>>>>> parent of c1a0155 (slight correction)
             - **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting ([This is in line with academic literature](https://link.springer.com/chapter/10.1007/978-981-10-7398-4_37)).
             """)
 
@@ -297,7 +312,11 @@ else:
             **Google Embeddings API**:
            - **What**: The `gemini-embedding-001` model from Google, accessed via API.
            - **How**: Uses pretrained transformer models like BERT, but more advanced.
+<<<<<<< HEAD
            - **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.""")
+=======
+           - **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.
+>>>>>>> parent of c1a0155 (slight correction)
 
         with st.expander("3. Hybrid Model"):
             st.markdown("""
@@ -307,7 +326,11 @@ else:
             ```python
             hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
             ```
+<<<<<<< HEAD
             - We tuned weights using a simplified grid search""")
+=======
+            - We tuned weights using a simplified grid search
+>>>>>>> parent of c1a0155 (slight correction)
 
 
         st.markdown("---")
