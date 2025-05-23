@@ -1,5 +1,5 @@
 # Book Recommendation System: Final Report
-A machine learning project by Amélie Madrona & Linne Verhoeven.
+A machine learning project by Amélie Madrona & Linne Verhoeven. <br>
 For interactive learning on this project, check-out our video on Youtube: https://youtu.be/GcgB8V5QjHA?si=deK6RG9Pg3uF-wZ4
 
 ## Table of Contents  
