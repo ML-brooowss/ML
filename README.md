@@ -177,6 +177,8 @@ To compare book content, we transformed textual metadata (title, author, descrip
 
 We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices. We did this to leverage the strengths of each system while mitigating their individual weaknesses. Collaborative filtering captures patterns from user behavior but struggles with new or sparsely rated items, while content-based filtering can recommend new or niche items using item attributes but often lacks diversity. By blending them together, we ensure that recommendations remain accurate even when user interaction data is limited, while also introducing semantic richness and personalization based on content.
 
+We explored a wide range of model combinations. At the similarity level (i.e., when computing item-to-item similarity), we experimented with hybrids of different sources: BERT × Google Embeddings × Item-based CF, TF-IDF × Google × CF, and a full combination of TF-IDF × BERT × Google × CF. In addition to combining similarities, we also tested hybridization at the prediction level. Here, we incorporated User-based Collaborative Filtering and ran a simplified grid search over weighted combinations of TF-IDF, BERT, Google Embeddings, Item-based CF, and User-based CF prediction matrices.
+
 ```python
 hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
 ```
@@ -224,8 +226,10 @@ Looking at the sample of books that were borrowed by the user here below, we see
 
 ![Previously read books](readme_images/Previously_borrowed_2.png)
 
+## Next steps
+To further improve the recommender system, several enhancements could be explored. 
+1) We could fine-tune the hybrid model performing a computationally heavy full GridSearch. We could also try to use dynamic weight optimization techniques such as Bayesian search or gradient-based learning instead of static grid search.
+2) We could also experiment with neural network-based recommenders, such as neural collaborative filtering or deep learning models that can learn complex interaction patterns between users and items.
+3) Another avenue is to test alternative embedding sources, including more recent models from the HuggingFace embedding leaderbord like GritLM-7b or Cohere.
+4) Lastly, we could also try to incorporating temporal data (e.g., recency of interactions) and user demographic information to personalize recommendations more effectively.
 
-<!-- * Which is the best model?
-* Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
-* Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
-Have a position on the leaderboard of this competition, with score better than 0.1452. -->
