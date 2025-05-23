@@ -257,39 +257,51 @@ else:
         with st.expander("1. Collaborative Filtering (User/User & Item/Item)"):
             st.markdown("""
             **User-Based CF:**
-            - Based on users with similar interaction history
-            - Similarity: Cosine
-            - Optimal k: 70
+            - **Concept**: Recommend books liked by users who are similar to the target user.
+            - **Baseline similarity**: Cosine similarity: measures the angle between user vectors; suitable for sparse, implicit data.
+            - **K-Nearest Neighbors (KNN)**: With the goal of improving and evaluating the User-based collaborative filtering recommender system, we implemented a KNN-based variant using scikit-learn’s `NearestNeighbors`. 
+Instead of relying on a full similarity matrix (which is rather computationally heavy and noisy), the knn approach identifies only the top-*k* most similar items for each prediction.
+We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean *Precision@10*. We visualized the results with error bars to reflect performance variability across different random splits [see graph]. We found optimal performance at **k = 70**. 
+            - **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
 
             **Item-Based CF:**
-            - Based on items with similar users
-            - Similarity: Cosine (Pearson skipped for implicit data)
-            - Optimal k: 70
+            - **Concept**: Recommend books similar to those a user already interacted with.
+            - **Baseline Similarity**: Cosine similarity, which measures the angle between item vectors; suitable for sparse, implicit data.
+            - **K-Nearest Neighbors (KNN)**: As in the User-Based CF case, we tested again different values for k (number of neighbors) and found optimal performance at-*k = 70*-.
+            - **Pearson Correlation**: Not used because it's more effective for **explicit ratings** (e.g., a book rating from 1–5). Pearson correlation adjusts for user bias.
+            - **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting ([This is in line with academic literature](https://link.springer.com/chapter/10.1007/978-981-10-7398-4_37)).
             """)
 
         with st.expander("2. Content-Based Filtering"):
             st.markdown("""
             **TF-IDF**:
-            - Text → sparse vector
-            - Captures surface-level similarity (keywords)
+            - **What**: This is a classic method in information retrieval. TF-IDF breaks down text into individual tokens and measures word importance relative to all other books.
+            - **How**: TF-IDF represents text as sparse vectors based on word frequency, adjusted by how unique each word is.
+            - **Use Case**: Good for surface-level textual similarities (e.g., shared keywords).
+            - **Example**: Book: *Harry Potter and the Philosopher's Stone*, Author: *J.K. Rowling*, Publisher: *Bloomsbury*  
+             TF-IDF counts the frequency of each word, downweights common ones like “publishing,” and generates a sparse vector.
 
             **BERT**:
-            - Text → dense vector
-            - Captures semantic meaning/context
+            - **What**: Deep learning model (transformer architecture) that takes full phrases or sentences.
+            - **How**: Generates dense, contextualized embeddings that understand semantic meaning.
+            - **Use Case**: Captures deeper relationships in content (e.g., plot similarities).
+            - **Example**: With the input: “Harry Potter and the Philosopher's Stone J.K. Rowling Bloomsbury” BERT understands context and recognizes title, author, and organization even without exact matches.
 
             **Google Embeddings API**:
-            - Similar to BERT but cloud-hosted
-            """)
+           - **What**: The `gemini-embedding-001` model from Google, accessed via API.
+           - **How**: Uses pretrained transformer models like BERT, but more advanced.
+           - **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.
 
         with st.expander("3. Hybrid Model"):
             st.markdown("""
-            Combined similarities:
+            We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices. We did this to leverage the strengths of each system while mitigating their individual weaknesses. Collaborative filtering captures patterns from user behavior but struggles with new or sparsely rated items, while content-based filtering can recommend new or niche items using item attributes but often lacks diversity. By blending them together, we ensure that recommendations remain accurate even when user interaction data is limited, while also introducing semantic richness and personalization based on content.
+            
+            Best performing combined similarities:
             ```python
             hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
             ```
-            - Tuned weights using simplified grid search
-            - Highest performance with BERT + Google + Item-CF
-            """)
+            - We tuned weights using a simplified grid search
+
 
         st.markdown("---")
         st.markdown("### 📊 Evaluation Metrics")
@@ -302,10 +314,10 @@ else:
                 "Item-Item CF",
                 "TF-IDF (Content)",
                 "BERT (Content)",
-                "Google API Embeddings",
-                "Hybrid (CF + BERT + API)",
-                "Hybrid (CF + TF-IDF + API)",
-                "Hybrid (CF + TF-IDF + BERT + API)"
+                "Google Gemini Embeddings",
+                "Hybrid (CF + BERT + Google)",
+                "Hybrid (CF + TF-IDF + Google)",
+                "Hybrid (CF + TF-IDF + BERT + Google)"
             ],
             "Precision@10": [
                 "0.0612",
