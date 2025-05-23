@@ -35,7 +35,7 @@ We evaluated different models using metrics like **Precision@K** and **Recall@10
 
 Before we explain these different techniques, let's have an overview of the datasets that we were provided with. In the second section, we explain data enhancing techniques used to enrich the data at our availability. Then, we introduce the different methods we tried for our recommender system. Finally, we show example results of our recommender system.
 
-## 📊 Datasets Overview and EDA [See: exploration.ipynb]
+## 📊 Datasets Overview and EDA [See: exploration.ipynb](./exploration.ipynb)
 
 To get a feeling of the amount of data that we are working with, let's look at the total number of interactions, the number of unique items (or books) and the number of unique users.
 
