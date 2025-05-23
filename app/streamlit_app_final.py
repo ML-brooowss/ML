@@ -64,14 +64,14 @@ else:
         st.markdown(f"Logged in as customer: **{selected_customer}**")
 
         shuffle_clicked = st.button("🔀 Shuffle Previously Read Books")
+        
+        unique_books = (
+            interactions[interactions["u"] == selected_customer]
+            .merge(df_books, on="i", how="left")
+            .drop_duplicates(subset=["i"]))
 
         if 'recent_reads' not in st.session_state or shuffle_clicked:
-            st.session_state.recent_reads = (
-                interactions[interactions["u"] == selected_customer]
-                .merge(df_books, on="i", how="left")
-                .drop_duplicates(subset=["i"])
-                .sample(min(10, len(unique_books)), replace=False)
-            )
+            st.session_state.recent_reads = unique_books.sample(min(5, len(unique_books)), replace=False).reset_index(drop=True)
 
         st.subheader("Previously borrowed books 📚")
 
