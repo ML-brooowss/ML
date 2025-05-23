@@ -205,6 +205,14 @@ If we compare that with 5 books chosen at random that the user had previously re
 
 ![Previously read books](readme_images/Previously_borrowed.png)
 
+Let's pick another user and see another set of previously read books and recommendations. Here are recommendations for User 433 (also chosen at random)
+
+![](readme_images/Recs1_2.png)
+![Example recommendations for user 0](readme_images/Recs2_2.png)
+
+Looking at the sample of books that were borrowed by the user here below,
+
+![Previously read books](readme_images/Previously_borrowed_2.png)
 
 
 <!-- * Which is the best model?
