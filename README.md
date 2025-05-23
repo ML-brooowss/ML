@@ -1,5 +1,5 @@
-# ML
-
+# Book Recommendation System: Final Report
+A machine learning project by Amélie Madrona & Linne Verhoeven.
 ## 📊 Datasets Overview and EDA
 
 | Metric              | Count   |
@@ -65,142 +65,126 @@ In addition to the previous enhancing methods, we used BERTopics to extract the 
 
 We see that the large majority of the topics are unidentified by the model. The most prominent topics seem to be feminism, psychology and academic research. We could have manually labelled the clusters to make them more human-friendly, but decided to keep them as such. In fact, we used these topics for our recommender system as they were later on using embeddings, as seen in the next section. An interesting extension to our work would be to run cross validation to find the optimal number of topics for the embeddings.
 
-* Which is the best model?
+
+<!-- * Which is the best model?
 * Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
 * Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
-Have a position on the leaderboard of this competition, with score better than 0.1452.
+Have a position on the leaderboard of this competition, with score better than 0.1452. -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Recommendation System: Final Report</title>
-</head>
-<body>
-  <h1>Book Recommendation System: Final Report</h1>
+## Overview
 
-  <h2>Overview</h2>
-  <p>This project aims to develop a recommender system that proposes books to users based on either their previous behavior (interaction history) or the characteristics of the books themselves. We explored three main approaches:</p>
-  <ol>
-    <li><strong>Collaborative Filtering</strong>: Based on user-item interaction patterns.</li>
-    <li><strong>Content-Based Filtering</strong>: Based on item attributes like title, genre, and description.</li>
-    <li><strong>Hybrid Recommender</strong>: A combination of both approaches.</li>
-  </ol>
-  <p>We evaluated different models using metrics like <strong>Precision@K</strong> and <strong>Recall@10</strong> to measure the effectiveness of recommendations.</p>
+This project aims to develop a recommender system that proposes books to users based on either their previous behavior (interaction history) or the characteristics of the books themselves. We explored three main approaches:
 
-  <h2>1. Collaborative Filtering (CF)</h2>
-  <p>Collaborative filtering makes recommendations by analyzing past user behavior (e.g., which books were read) and identifying similarities between users or items.</p>
+1. **Collaborative Filtering**: Based on user-item interaction patterns.
+2. **Content-Based Filtering**: Based on item attributes like title, genre, and description.
+3. **Hybrid Recommender**: A combination of both approaches.
 
-  <h3>1.1 User-Based CF</h3>
-  <ul>
-    <li><strong>Concept</strong>: Recommend books liked by users who are similar to the target user.</li>
-    <li><strong>Baseline similarity</strong>: Cosine similarity
-      <ul>
-        <li>Measures the angle between item vectors; suitable for sparse, implicit data.</li>
-      </ul>
-    </li>
-    <li><strong>K-Nearest Neighbors (KNN)</strong>:
-      <ul>
-        <li>We tested different values for k (number of neighbors) and found optimal performance at <strong>k = 70</strong></li>
-        <li><em>[insert graph]</em></li>
-      </ul>
-    </li>
-  </ul>
-  <p><strong>Conclusion</strong>: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.</p>
+We evaluated different models using metrics like **Precision@K** and **Recall@10** to measure the effectiveness of recommendations.
 
-  <h3>1.2 Item-Based CF</h3>
-  <ul>
-    <li><strong>Concept</strong>: Recommend books similar to those a user already interacted with.</li>
-    <li><strong>Baseline Similarity</strong>: Cosine similarity
-      <ul>
-        <li>Measures the angle between item vectors; suitable for sparse, implicit data.</li>
-      </ul>
-    </li>
-    <li><strong>K-Nearest Neighbors (KNN)</strong>:
-      <ul>
-        <li>We tested different values for k (number of neighbors) and found optimal performance at <strong>k = 70</strong></li>
-        <li><em>[insert graph]</em></li>
-      </ul>
-    </li>
-    <li><strong>Pearson Correlation</strong>: Not used because it's more effective for <strong>explicit ratings</strong>, that is when customers give explicit ratings (e.g., from 1–5). Pearson correlation adjusts for user bias.</li>
-  </ul>
-  <p><strong>Conclusion</strong>: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting <a href="https://link.springer.com/chapter/10.1007/978-981-10-7398-4_37" target="_blank">[in line with academic literature]</a>.</p>
+---
 
-  <h2>2. Content-Based Filtering (CBF)</h2>
-  <p>Content-based filtering recommends books that are similar in content to those the user liked previously. This method does not depend on what other users did. To compare book content, we transformed textual metadata (title, author, description, etc.) into <strong>embeddings</strong>: numerical vector representations of the semantic meaning of a piece of text (e.g., author) that allow us to compute similarity. This allows us to calculate similarity scores using methods like cosine similarity.</p>
+## 1. Collaborative Filtering (CF)
 
-  <h3>2.2 Embedding Techniques Used</h3>
+Collaborative filtering makes recommendations by analyzing past user behavior (e.g., which books were read) and identifying similarities between users or items.
 
-  <h4>TF-IDF (Term Frequency-Inverse Document Frequency)</h4>
-  <ul>
-    <li><strong>What</strong>: A classic method in information retrieval. TF-IDF breaks down text into individual tokens and measures how important each word is in a book’s metadata relative to all other books.</li>
-    <li><strong>How</strong>: Represents text as sparse vectors based on word frequency, adjusted by how unique each word is across the dataset.</li>
-    <li><strong>Use Case</strong>: Good for surface-level textual similarities (e.g., shared keywords).</li>
-    <li><strong>Example</strong>: We have a book with Title = <em>Harry Potter and the Philosopher's Stone</em>, Author = <em>J.K. Rowling</em>, Publisher = <em>Bloomsbury</em>. We concatenate all the metadata into one string: “Harry Potter and the Philosopher's Stone J.K. Rowling Bloomsbury”. TF-IDF counts the frequency of each word, downweights common words like “publishing”, and generates a sparse vector. If two books share the same publisher or author, they will appear similar based on the sparse vector.</li>
-  </ul>
+### 1.1 User-Based CF
 
-  <h4>BERT Embeddings</h4>
-  <ul>
-    <li><strong>What</strong>: Deep learning model by Google (transformer architecture) that takes full phrases or sentences (not just individual words like TF-IDF). It understands the context and relationships between words using a transformer model and outputs a dense vector that encodes the overall semantic meaning.</li>
-    <li><strong>How</strong>: Generates dense, contextualized embeddings that understand the semantic meaning of sentences.</li>
-    <li><strong>Use Case</strong>: Captures deeper relationships in content (e.g., plot similarities).</li>
-    <li><strong>Example</strong>: Again, we create a concatenated string: “Harry Potter and the Philosopher's Stone J.K. Rowling Bloomsbury”. Instead of counting each word, BERT processes the entire sentence and understands that “Harry Potter and the Philosopher's Stone” is a title, “J.K. Rowling” is an author, and “Bloomsbury” is an organization. It doesn’t rely on exact matches and can understand that “Bloomsbury” and “BiggerPockets” are both major publishers.</li>
-  </ul>
+- **Concept**: Recommend books liked by users who are similar to the target user.
+- **Baseline similarity**: Cosine similarity  
+  - Measures the angle between item vectors; suitable for sparse, implicit data.
+- **K-Nearest Neighbors (KNN)**:
+  - We tested different values for k (number of neighbors) and found optimal performance at **k = 70**
+  - _[insert graph]_
 
-  <h4>Google Gemini Embeddings</h4>
-  <ul>
-    <li><strong>What</strong>: The <code>gemini-embedding-001</code> model, accessed through a cloud-based API that produces semantic embeddings from text. This model is currently leading the <a href="https://huggingface.co/spaces/mteb/leaderboard" target="_blank">Huggingface MTEB Embedding Leaderboard</a>, a reference when it comes to embedding models.</li>
-    <li><strong>How</strong>: Uses pretrained large language models and transformer architectures, similar to BERT and more advanced.</li>
-    <li><strong>Use Case</strong>: Most advanced embedding model. Easy to integrate and computationally efficient locally.</li>
-  </ul>
+**Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
 
-  <h2>3. Hybrid Recommender System</h2>
-  <p>We combined both collaborative and content-based approaches using a <strong>weighted sum</strong> of different similarity matrices.</p>
+### 1.2 Item-Based CF
 
-  <pre><code>hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim</code></pre>
+- **Concept**: Recommend books similar to those a user already interacted with.
+- **Baseline Similarity**: Cosine similarity  
+  - Measures the angle between item vectors; suitable for sparse, implicit data.
+- **K-Nearest Neighbors (KNN)**:
+  - We tested different values for k (number of neighbors) and found optimal performance at **k = 70**
+  - _[insert graph]_
+- **Pearson Correlation**: Not used because it's more effective for **explicit ratings** (e.g., from 1–5). Pearson correlation adjusts for user bias.
 
-  <p>We did not perform full grid search and/or cross-validation due to computational limits, but used a <strong>simplified tuning</strong> to demonstrate the concept.</p>
-  <p>We found the highest precision using BERT, Google, and item-CF. The result of the simplified grid search showed:</p>
-  <p><em>[Insert table: highlight best combo]</em></p>
+**Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting ([in line with academic literature](https://link.springer.com/chapter/10.1007/978-981-10-7398-4_37)).
 
-  <p><strong>Note</strong>: Without cross-validation, results may overfit. However, the hybrid approach still showed the best overall performance in our simplified tests.</p>
-</body>
-</html>
+---
 
+## 2. Content-Based Filtering (CBF)
 
-<table border="1" style="border-collapse: collapse; text-align: center; width: 100%;">
-  <thead style="background-color: #f5f5f5;">
-    <tr>
-      <th></th>
-      <th><strong>user-user CF</strong></th>
-      <th><strong>item-item CF</strong></th>
-      <th><strong>BERT (item-based)</strong></th>
-      <th><strong>TF-IDF (item-based)</strong></th>
-      <th><strong>Google API (item-based)</strong></th>
-      <th><strong>Hybrid (CF + Content + Popularity)</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Precision@10</strong></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-    </tr>
-    <tr>
-      <td><strong>Recall@10</strong></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-      <td><!-- your value --></td>
-    </tr>
-  </tbody>
-</table>
+Content-based filtering recommends books that are similar in content to those the user liked previously. This method does not depend on what other users did.
+
+To compare book content, we transformed textual metadata (title, author, description, etc.) into **embeddings**: numerical vector representations of the semantic meaning of a piece of text that allow us to compute similarity.
+
+### 2.2 Embedding Techniques Used
+
+#### TF-IDF (Term Frequency-Inverse Document Frequency)
+
+- **What**: A classic method in information retrieval. Breaks down text into individual tokens and measures word importance relative to all other books.
+- **How**: Represents text as sparse vectors based on word frequency, adjusted by how unique each word is.
+- **Use Case**: Good for surface-level textual similarities (e.g., shared keywords).
+- **Example**:  
+  Book: *Harry Potter and the Philosopher's Stone*, Author: *J.K. Rowling*, Publisher: *Bloomsbury*  
+  TF-IDF counts the frequency of each word, downweights common ones like “publishing,” and generates a sparse vector.
+
+#### BERT Embeddings
+
+- **What**: Deep learning model (transformer architecture) that takes full phrases or sentences.
+- **How**: Generates dense, contextualized embeddings that understand semantic meaning.
+- **Use Case**: Captures deeper relationships in content (e.g., plot similarities).
+- **Example**:  
+  Input: “Harry Potter and the Philosopher's Stone J.K. Rowling Bloomsbury”  
+  BERT understands context and recognizes title, author, and organization even without exact matches.
+
+#### Google Gemini Embeddings
+
+- **What**: The `gemini-embedding-001` model from Google, accessed via API.
+- **How**: Uses pretrained transformer models like BERT, but more advanced.
+- **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.
+
+---
+
+## 3. Hybrid Recommender System
+
+We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices.
+
+```python
+hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
+```
+
+We did not perform full grid search or cross-validation due to computational limits, but used **simplified tuning** to demonstrate the concept.
+
+We found the highest precision using BERT, Google, and item-CF. The result of the simplified grid search showed:
+
+_**[Insert table: highlight best combo]**_
+
+**Note**: Without cross-validation, results may overfit. However, the hybrid approach still showed the best overall performance in our simplified tests.
+
+---
+
+## Evaluation Table
+
+|                           | **user-user CF** | **item-item CF** | **BERT (item-based)** | **TF-IDF (item-based)** | **Google API (item-based)** | **Hybrid (CF + Content + Popularity)** |
+|---------------------------|------------------|-------------------|------------------------|---------------------------|-----------------------------|----------------------------------------|
+| **Precision@10**          | _[your value]_   | _[your value]_    | _[your value]_         | _[your value]_            | _[your value]_              | _[your value]_                         |
+| **Recall@10**             | _[your value]_   | _[your value]_    | _[your value]_         | _[your value]_            | _[your value]_              | _[your value]_                         |
+
+## Example recommendations
+
+Let's pick a user at random and see what the recommender system outputs. Here below is shown the recommendations for user 0 as we formatted it in our user interface.
+
+![](readme_images/Recs1.png)
+![Example recommendations for user 0](readme_images/Recs2.png)
+
+If we compare that with 5 books chosen at random that the user had previously read, we see that the recommender makes some meaningful ones. For instance
+
+![Previously read books](readme_images/Previously_borrowed.png)
 
 
+
+<!-- * Which is the best model?
+* Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
+* Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
+Have a position on the leaderboard of this competition, with score better than 0.1452. -->
