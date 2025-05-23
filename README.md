@@ -108,12 +108,6 @@ In addition to the previous enhancing methods, we used BERTopics to extract the 
 
 We see that the large majority of the topics are unidentified by the model. The most prominent topics seem to be feminism, psychology and academic research. We could have manually labelled the clusters to make them more human-friendly, but decided to keep them as such to not introduce bias. In fact, we used these topics for our recommender system by including the extracted keywords per topic in embeddings, as seen in the next section. The results were An interesting extension to our work would be to run cross validation to find the optimal number of topics for the embeddings.
 
-
-<!-- * Which is the best model?
-* Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
-* Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
-Have a position on the leaderboard of this competition, with score better than 0.1452. -->
-
 ### Recommendation system techniques
 #### 1. Collaborative Filtering (CF)
 
@@ -127,7 +121,9 @@ Collaborative filtering makes recommendations by analyzing past user behavior (e
 - **K-Nearest Neighbors (KNN)**:
 - With the goal of improving and evaluating the User-based collaborative filtering recommender system, we implemented a KNN-based variant using scikit-learn’s `NearestNeighbors`. 
 Instead of relying on a full similarity matrix (which is rather computationally heavy and noisy), the knn approach identifies only the top-*k* most similar items for each prediction.
-We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean *Precision@10*. We visualized the results with error bars to reflect performance variability across different random splits [see graph]. We found optimal performance at *k = 70*. 
+We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean *Precision@10*. We visualized the results with error bars to reflect performance variability across different random splits. We found optimal performance at k = 60.
+
+![user-based knn precision](user_knn_precision_plot.png)
 - **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
 
 ##### Item-Based CF
