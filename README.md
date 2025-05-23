@@ -123,7 +123,7 @@ Collaborative filtering makes recommendations by analyzing past user behavior (e
 Instead of relying on a full similarity matrix (which is rather computationally heavy and noisy), the knn approach identifies only the top-*k* most similar items for each prediction.
 We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean *Precision@10*. We visualized the results with error bars to reflect performance variability across different random splits. We found optimal performance at k = 60.
 
-![user-based knn precision](user_knn_precision_plot.png)
+![user-based knn precision](readme_images/user_knn_precision_plot.png)
 - **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
 
 ##### Item-Based CF
