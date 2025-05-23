@@ -207,10 +207,10 @@ If we compare that with 5 books chosen at random that the user had previously re
 
 Let's pick another user and see another set of previously read books and recommendations. Here are recommendations for User 433 (also chosen at random)
 
-![](readme_images/Recs1_2.png)
-![Example recommendations for user 0](readme_images/Recs2_2.png)
+![](readme_images/Recs2_2.png)
+![Example recommendations for user 0](readme_images/Recs1_2.png)
 
-Looking at the sample of books that were borrowed by the user here below,
+Looking at the sample of books that were borrowed by the user here below, we see that the recommender is relevant, but maybe not so useful: in fact, the sample of 5 books previously read by the user are all included in the recommender. However, the guide about Emilia Romagna seems relevant given the other guides about Marocco and Puglia that were previously read by the user. The food related recommendations might also be relevant, given that people who do gardening are most likely also interested about food. On the contrary, the book about nazi women seems completely off-topic and doesn't seem to make sense. 
 
 ![Previously read books](readme_images/Previously_borrowed_2.png)
 
