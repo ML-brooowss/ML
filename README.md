@@ -109,7 +109,7 @@ In addition to the previous enhancing methods, we used BERTopics to extract the 
 
 ![Reduced topic distributions](readme_images/reduced_topic_distribution.png)
 
-We see that the large majority of the topics are unidentified by the model. The most prominent topics seem to be feminism, psychology and academic research. We could have manually labelled the clusters to make them more human-friendly, but decided to keep them as such to not introduce bias. In fact, we used these topics for our recommender system by including the extracted keywords per topic in embeddings, as seen in the next section. The results were An interesting extension to our work would be to run cross validation to find the optimal number of topics for the embeddings.
+We see that the large majority of the topics are unidentified by the model. The most prominent topics seem to be feminism, psychology and academic research. We could have manually labelled the clusters to make them more human-friendly, but decided to keep them as such to not introduce bias. In fact, we used these topics for our recommender system by including the extracted keywords per topic in embeddings. Embeddings are explained in the next section. The results were not superior compared to using the existing book subjects. Still, an interesting extension to our work would be to run cross validation to find the optimal number of topics for the embeddings.
 
 ### Recommendation system techniques [See: RecommenderSystem.py]
 #### 1. Collaborative Filtering (CF)
