@@ -1,5 +1,6 @@
 # Book Recommendation System: Final Report
 A machine learning project by Amélie Madrona & Linne Verhoeven.
+For interactive learning on this project, check-out our video on Youtube: https://youtu.be/GcgB8V5QjHA?si=deK6RG9Pg3uF-wZ4
 
 ## Table of Contents  
 [Introduction](#introduction)  
@@ -34,7 +35,7 @@ We evaluated different models using metrics like **Precision@K** and **Recall@10
 
 Before we explain these different techniques, let's have an overview of the datasets that we were provided with. In the second section, we explain data enhancing techniques used to enrich the data at our availability. Then, we introduce the different methods we tried for our recommender system. Finally, we show example results of our recommender system.
 
-## 📊 Datasets Overview and EDA
+## 📊 Datasets Overview and EDA [See: exploration.ipynb]
 
 To get a feeling of the amount of data that we are working with, let's look at the total number of interactions, the number of unique items (or books) and the number of unique users.
 
@@ -108,7 +109,7 @@ In addition to the previous enhancing methods, we used BERTopics to extract the 
 
 We see that the large majority of the topics are unidentified by the model. The most prominent topics seem to be feminism, psychology and academic research. We could have manually labelled the clusters to make them more human-friendly, but decided to keep them as such to not introduce bias. In fact, we used these topics for our recommender system by including the extracted keywords per topic in embeddings, as seen in the next section. The results were An interesting extension to our work would be to run cross validation to find the optimal number of topics for the embeddings.
 
-### Recommendation system techniques [see RecommenderSystem.py]
+### Recommendation system techniques [See: RecommenderSystem.py]
 #### 1. Collaborative Filtering (CF)
 
 Collaborative filtering makes recommendations by analyzing past user behavior (e.g., which books were read) and identifying similarities between users or items.
@@ -167,7 +168,7 @@ To compare book content, we transformed textual metadata (title, author, descrip
 - **How**: Uses pretrained transformer models like BERT, but more advanced.
 - **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.
 
-#### 3. Hybrid Recommender System [see Hybrid_gridsearch.ipynb]
+#### 3. Hybrid Recommender System [See: Hybrid_gridsearch.ipynb]
 
 We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices. We did this to leverage the strengths of each system while mitigating their individual weaknesses. Collaborative filtering captures patterns from user behavior but struggles with new or sparsely rated items, while content-based filtering can recommend new or niche items using item attributes but often lacks diversity. By blending them together, we ensure that recommendations remain accurate even when user interaction data is limited, while also introducing semantic richness and personalization based on content.
 
@@ -179,8 +180,6 @@ hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
 
 We did not perform full grid search or cross-validation due to computational limits, but used **simplified tuning** to demonstrate the concept.
 The highest precision was found when combining BERT, TF-IDF Google, and item-CF. This is the model our current recommender is running on. Result of the simplified grid search showed:
-
-_**[Insert table: highlight best combo]**_
 
 **Note**: Without cross-validation, results may overfit. However, the hybrid approach still showed the best overall performance in our simplified tests.
 
