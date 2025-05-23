@@ -177,7 +177,7 @@ To compare book content, we transformed textual metadata (title, author, descrip
 
 #### 3. Hybrid Recommender System
 
-We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices.
+We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices. We did this to leverage the strengths of each system while mitigating their individual weaknesses. Collaborative filtering captures patterns from user behavior but struggles with new or sparsely rated items, while content-based filtering can recommend new or niche items using item attributes but often lacks diversity. By blending them together, we ensure that recommendations remain accurate even when user interaction data is limited, while also introducing semantic richness and personalization based on content.
 
 ```python
 hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
@@ -194,11 +194,40 @@ _**[Insert table: highlight best combo]**_
 ---
 
 ### Evaluation Table
-
-|                           | **user-user CF** | **item-item CF** | **BERT (item-based)** | **TF-IDF (item-based)** | **Google API (item-based)** | **Hybrid (CF + Content + Popularity)** |
-|---------------------------|------------------|-------------------|------------------------|---------------------------|-----------------------------|----------------------------------------|
-| **Precision@10**          | _[your value]_   | _[your value]_    | _[your value]_         | _[your value]_            | _[your value]_              | _[your value]_                         |
-| **Recall@10**             | _[your value]_   | _[your value]_    | _[your value]_         | _[your value]_            | _[your value]_              | _[your value]_                         |
+   table_data = {
+            "Model": [
+                "User-User CF",
+                "Item-Item CF",
+                "TF-IDF (Content)",
+                "BERT (Content)",
+                "Google Gemini Embeddings",
+                "Hybrid (CF + BERT + Google)",
+                "Hybrid (CF + TF-IDF + Google)",
+                "Hybrid (CF + TF-IDF + BERT + Google)"
+            ],
+            "Precision@10": [
+                "0.0612",
+                "0.0585",
+                "0.0149",
+                "0.1760",
+                "0.0480",
+                "0.0630",
+                "0.0630",
+                "0.0623"
+            ],
+            "Recall@10": [
+                "0.3167",
+                "0.2820",
+                "0.0910",
+                "0.1760",
+                "0.2700",
+                "0.2990",
+                "0.3000",
+                "0.3220"
+            ]
+        }
+        df = pd.DataFrame(table_data)
+        st.dataframe(df, use_container_width=True)
 
 ## Example recommendations
 
