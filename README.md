@@ -176,10 +176,12 @@ We explored a wide range of model combinations. At the similarity level (i.e., w
 
 ```python
 hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
+hybrid_pred = a * tfidf_prediction + b * item_cf_prediction + c * google_prediction + d * bert_prediction + e * user_cf_prediction
 ```
 
 We did not perform full grid search or cross-validation due to computational limits, but used **simplified tuning** to demonstrate the concept.
-The highest precision was found when combining BERT, TF-IDF Google, and item-CF. This is the model our current recommender is running on. Result of the simplified grid search showed:
+The highest precision was found when combining similarities of BERT, TF-IDF, Google, and item-CF. This is the model our current recommender is running on:
+hybrid_sim = 0.05 * tfidf_sim + 0.7 * item_cf_sim + 0.15 * google_sim + 0.1 * bert_sim
 
 **Note**: Without cross-validation, results may overfit. However, the hybrid approach still showed the best overall performance in our simplified tests.
 
