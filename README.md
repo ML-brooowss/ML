@@ -202,4 +202,13 @@ Let's pick a user at random and see what the recommender system outputs. Here be
 ![](readme_images/Recs1.png)
 ![Example recommendations for user 0](readme_images/Recs2.png)
 
-If we compare that with 5 books chosen at random that the user had previously read, we see that the recommender makes some meaningful ones. For instance, User 0 has already borrowed the book 'Pays Bas', which is about the Netherlands. The fact that our algorithm recommends two guides about Amsterdam shows that it is able to recommend books with a very high similarity. The same applies to the pedagogical books: the user has borrowed a book about having authority in the classroom, so recommendations number 2,3,4,5 and 6 seem highly relevant. Now moving on to recommendations that might not be so relevant. Perhaps, the first recommendation is not so relevant: sure, it is also in the realm of non-fiction, but it is more about how to organise knowledge 
+If we compare that with 5 books chosen at random that the user had previously read, we see that the recommender makes some meaningful ones. For instance, User 0 has already borrowed the book 'Pays Bas', which is about the Netherlands. The fact that our algorithm recommends two guides about Amsterdam shows that it is able to recommend books with a very high similarity. The same applies to the pedagogical books: the user has borrowed a book about having authority in the classroom, so recommendations number 2,3,4,5 and 6 seem highly relevant. Now moving on to recommendations that might not be so relevant. Perhaps, the first recommendation is not so relevant: sure, it is also in the realm of non-fiction, but it is more about how to organise knowledge systems than understanding how to be a better teacher, which doesn't seem so relevant for our User 0.
+
+![Previously read books](readme_images/Previously_borrowed.png)
+
+
+
+<!-- * Which is the best model?
+* Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
+* Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
+Have a position on the leaderboard of this competition, with score better than 0.1452. -->

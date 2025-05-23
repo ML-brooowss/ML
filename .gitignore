@@ -2,6 +2,7 @@
 **/.
 **/_pycache_
 ./items_with_embeddings.csv
-./config.py
+**/config.py
 ./ISBNdb_api_call_Daniel.csv
-./config
+**/Recommendation_System.ipynb
+**/gridsearch(1).ipynb
