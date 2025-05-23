@@ -76,7 +76,7 @@ How could we possibly remedy this and enhance the data we have access to?
 
 ## Data enhancing 
 
-We used APIs to extract more data about the items that are part of the library.
+We used APIs to extract more data about the items that are part of the library. [See data_enhancing.ipynb](./data_enhancing.ipynb)
 
 ### Google Books API
 
@@ -169,6 +169,7 @@ To compare book content, we transformed textual metadata (title, author, descrip
 - **What**: The `gemini-embedding-001` model from Google, accessed via API.
 - **How**: Uses pretrained transformer models like BERT, but more advanced.
 - **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.
+[See data_enhancing.ipynb](./data_enhancing.ipynb)
 
 #### 3. Hybrid Recommender System [See: Hybrid_gridsearch.ipynb](./Hybrid_gridsearch.ipynb)
 
