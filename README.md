@@ -170,7 +170,7 @@ To compare book content, we transformed textual metadata (title, author, descrip
 - **How**: Uses pretrained transformer models like BERT, but more advanced.
 - **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.
 
-#### 3. Hybrid Recommender System [See: Hybrid_gridsearch.ipynb]
+#### 3. Hybrid Recommender System [See: Hybrid_gridsearch.ipynb](./Hybrid_gridsearch.ipynb)
 
 We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices. We did this to leverage the strengths of each system while mitigating their individual weaknesses. Collaborative filtering captures patterns from user behavior but struggles with new or sparsely rated items, while content-based filtering can recommend new or niche items using item attributes but often lacks diversity. By blending them together, we ensure that recommendations remain accurate even when user interaction data is limited, while also introducing semantic richness and personalization based on content.
 
