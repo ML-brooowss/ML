@@ -1,25 +1,26 @@
 # Book Recommendation System: Final Report
 A machine learning project by Amélie Madrona & Linne Verhoeven.
 
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Datasets Overview & EDA](#-datasets-overview-and-eda)
-3. [Data Enhancing](#data-enhancing)
-  - [Google Books API](#google-books-api)
-  - [ISBN Database API](#isbn-database-api)
-  - [Outcome of Data Enhancing](#outcome-of-data-enhancing)
-  - [Data Enhancing Extension](#data-enhancing-extension)
-4. [Collaborative Filtering (CF)](#1-collaborative-filtering-cf)
-  - [User-Based CF](#11-user-based-cf)
-  - [Item-Based CF](#12-item-based-cf)
-5. [Content-Based Filtering (CBF)](#2-content-based-filtering-cbf)
-  - [Embedding Techniques Used](#22-embedding-techniques-used)
-    - [TF-IDF](#tf-idf-term-frequency-inverse-document-frequency)
-    - [BERT Embeddings](#bert-embeddings)
-    - [Google Gemini Embeddings](#google-gemini-embeddings)
-6. [Hybrid Recommender System](#3-hybrid-recommender-system)
-7. [Evaluation Table](#evaluation-table)
-8. [Example Recommendations](#example-recommendations)
+## Table of Contents  
+[Introduction](#introduction)  
+[Datasets Overview & EDA](#datasets-overview-and-eda)  
+[Data Enhancing](#data-enhancing)  
+  [Google Books API](#google-books-api)  
+  [ISBN Database API](#isbn-database-api)  
+  [Outcome of Data Enhancing](#outcome-of-data-enhancing)  
+  [Data Enhancing Extension](#data-enhancing-extension)  
+[Recommendation System Techniques](#recommendation-system-techniques)  
+  [Collaborative Filtering (CF)](#1-collaborative-filtering-cf)  
+    [User-Based CF](#user-based-cf)  
+    [Item-Based CF](#item-based-cf)  
+  [Content-Based Filtering (CBF)](#2-content-based-filtering-cbf)  
+    [Embedding Techniques Used](#embedding-techniques-used)  
+      [TF-IDF](#tf-idf-term-frequency-inverse-document-frequency)  
+      [BERT Embeddings](#bert-embeddings)  
+      [Google Gemini Embeddings](#google-gemini-embeddings)  
+  [Hybrid Recommender System](#3-hybrid-recommender-system)  
+[Evaluation Table](#evaluation-table)  
+[Example Recommendations](#example-recommendations)  
 
 ## Introduction
 
@@ -109,11 +110,12 @@ We see that the large majority of the topics are unidentified by the model. The 
 * Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
 Have a position on the leaderboard of this competition, with score better than 0.1452. -->
 
-### 1. Collaborative Filtering (CF)
+### Recommendation system techniques
+#### 1. Collaborative Filtering (CF)
 
 Collaborative filtering makes recommendations by analyzing past user behavior (e.g., which books were read) and identifying similarities between users or items.
 
-#### 1.1 User-Based CF
+##### User-Based CF
 
 - **Concept**: Recommend books liked by users who are similar to the target user.
 - **Baseline similarity**: Cosine similarity  
@@ -124,7 +126,7 @@ Instead of relying on a full similarity matrix (which is rather computationally 
 We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* randomized train-test splits. For each configuration, we measured the mean -*Precision@10*-. We visualized the results with error bars to reflect performance variability across different random splits [see graph]. We found optimal performance at **k = 70**. 
 **Conclusion**: Cosine similarity consistently outperformed other metrics for item-item collaborative filtering in our implicit feedback setting.
 
-#### 1.2 Item-Based CF
+##### Item-Based CF
 
 - **Concept**: Recommend books similar to those a user already interacted with.
 - **Baseline Similarity**: Cosine similarity  
@@ -137,15 +139,15 @@ We tested multiple *k* values (ranging from 10 to 100 neighbors) using *5* rando
 
 ---
 
-### 2. Content-Based Filtering (CBF)
+#### 2. Content-Based Filtering (CBF)
 
 Content-based filtering recommends books that are similar in content to those the user liked previously. This method does not depend on what other users did.
 
 To compare book content, we transformed textual metadata (title, author, description, etc.) into **embeddings**: numerical vector representations of the semantic meaning of a piece of text that allow us to compute similarity.
 
-#### 2.2 Embedding Techniques Used
+##### Embedding Techniques Used
 
-##### TF-IDF (Term Frequency-Inverse Document Frequency)
+###### TF-IDF (Term Frequency-Inverse Document Frequency)
 
 - **What**: A classic method in information retrieval. Breaks down text into individual tokens and measures word importance relative to all other books.
 - **How**: Represents text as sparse vectors based on word frequency, adjusted by how unique each word is.
@@ -154,7 +156,7 @@ To compare book content, we transformed textual metadata (title, author, descrip
   Book: *Harry Potter and the Philosopher's Stone*, Author: *J.K. Rowling*, Publisher: *Bloomsbury*  
   TF-IDF counts the frequency of each word, downweights common ones like “publishing,” and generates a sparse vector.
 
-##### BERT Embeddings
+###### BERT Embeddings
 
 - **What**: Deep learning model (transformer architecture) that takes full phrases or sentences.
 - **How**: Generates dense, contextualized embeddings that understand semantic meaning.
@@ -163,13 +165,13 @@ To compare book content, we transformed textual metadata (title, author, descrip
   Input: “Harry Potter and the Philosopher's Stone J.K. Rowling Bloomsbury”  
   BERT understands context and recognizes title, author, and organization even without exact matches.
 
-##### Google Gemini Embeddings
+###### Google Gemini Embeddings
 
 - **What**: The `gemini-embedding-001` model from Google, accessed via API.
 - **How**: Uses pretrained transformer models like BERT, but more advanced.
 - **Use Case**: Leading semantic embedding model ([MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)). Easy integration and efficient.
 
-### 3. Hybrid Recommender System
+#### 3. Hybrid Recommender System
 
 We combined both collaborative and content-based approaches using a **weighted sum** of different similarity matrices.
 
@@ -187,7 +189,7 @@ _**[Insert table: highlight best combo]**_
 
 ---
 
-## Evaluation Table
+### Evaluation Table
 
 |                           | **user-user CF** | **item-item CF** | **BERT (item-based)** | **TF-IDF (item-based)** | **Google API (item-based)** | **Hybrid (CF + Content + Popularity)** |
 |---------------------------|------------------|-------------------|------------------------|---------------------------|-----------------------------|----------------------------------------|
