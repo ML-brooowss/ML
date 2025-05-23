@@ -185,7 +185,7 @@ hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
 
 We did not perform full grid search or cross-validation due to computational limits, but used **simplified tuning** to demonstrate the concept.
 
-We found the highest precision using BERT, Google, and item-CF. The result of the simplified grid search showed:
+We found the highest precision when combining BERT, TF-IDF Google, and item-CF. This is the model our current recommender is running on. Result of the simplified grid search showed:
 
 _**[Insert table: highlight best combo]**_
 
@@ -194,40 +194,18 @@ _**[Insert table: highlight best combo]**_
 ---
 
 ### Evaluation Table
-   table_data = {
-            "Model": [
-                "User-User CF",
-                "Item-Item CF",
-                "TF-IDF (Content)",
-                "BERT (Content)",
-                "Google Gemini Embeddings",
-                "Hybrid (CF + BERT + Google)",
-                "Hybrid (CF + TF-IDF + Google)",
-                "Hybrid (CF + TF-IDF + BERT + Google)"
-            ],
-            "Precision@10": [
-                "0.0612",
-                "0.0585",
-                "0.0149",
-                "0.1760",
-                "0.0480",
-                "0.0630",
-                "0.0630",
-                "0.0623"
-            ],
-            "Recall@10": [
-                "0.3167",
-                "0.2820",
-                "0.0910",
-                "0.1760",
-                "0.2700",
-                "0.2990",
-                "0.3000",
-                "0.3220"
-            ]
-        }
-        df = pd.DataFrame(table_data)
-        st.dataframe(df, use_container_width=True)
+## Model Performance Comparison
+
+| Model                                 | Precision@10 | Recall@10 |
+|--------------------------------------|--------------|-----------|
+| User-User CF                         | 0.0612       | 0.3167    |
+| Item-Item CF                         | 0.0585       | 0.2820    |
+| TF-IDF (Content)                     | 0.0149       | 0.0910    |
+| BERT (Content)                       | 0.1760       | 0.1760    |
+| Google Gemini Embeddings             | 0.0480       | 0.2700    |
+| Hybrid (CF + BERT + Google)          | 0.0630       | 0.2990    |
+| Hybrid (CF + TF-IDF + Google)        | 0.0630       | 0.3000    |
+| Hybrid (CF + TF-IDF + BERT + Google) | 0.0623       | 0.3220    |
 
 ## Example recommendations
 
