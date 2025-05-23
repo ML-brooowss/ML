@@ -69,7 +69,8 @@ else:
             st.session_state.recent_reads = (
                 interactions[interactions["u"] == selected_customer]
                 .merge(df_books, on="i", how="left")
-                .sample(5, replace=False)
+                .drop_duplicates(subset=["i"])
+                .sample(10, replace=False)
             )
 
         st.subheader("Previously borrowed books 📚")
