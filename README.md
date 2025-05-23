@@ -1,10 +1,25 @@
 # Book Recommendation System: Final Report
 A machine learning project by Amélie Madrona & Linne Verhoeven.
 
-## Table of Contens
-1. [Introduction](#Introduction)
-2. [Subheading 2](#subheading-2)
-3. [Subheading 3](#sub-heading-3)
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Datasets Overview & EDA](#-datasets-overview-and-eda)
+3. [Data Enhancing](#data-enhancing)
+  - [Google Books API](#google-books-api)
+  - [ISBN Database API](#isbn-database-api)
+  - [Outcome of Data Enhancing](#outcome-of-data-enhancing)
+  - [Data Enhancing Extension](#data-enhancing-extension)
+4. [Collaborative Filtering (CF)](#1-collaborative-filtering-cf)
+  - [User-Based CF](#11-user-based-cf)
+  - [Item-Based CF](#12-item-based-cf)
+5. [Content-Based Filtering (CBF)](#2-content-based-filtering-cbf)
+  - [Embedding Techniques Used](#22-embedding-techniques-used)
+    - [TF-IDF](#tf-idf-term-frequency-inverse-document-frequency)
+    - [BERT Embeddings](#bert-embeddings)
+    - [Google Gemini Embeddings](#google-gemini-embeddings)
+6. [Hybrid Recommender System](#3-hybrid-recommender-system)
+7. [Evaluation Table](#evaluation-table)
+8. [Example Recommendations](#example-recommendations)
 
 ## Introduction
 
@@ -20,13 +35,15 @@ Before we explain these different techniques, let's have an overview of the data
 
 ## 📊 Datasets Overview and EDA
 
+To get a feeling of the amount of data that we are working with, let's look at the total number of interactions, the number of unique items (or books) and the number of unique users.
+
 | Metric              | Count   |
 |---------------------|--------:|
 | Total interactions  | 87,047  |
 | Unique items        | 15,291  |
 | Unique users        | 7,838   |
 
-Let's look at the data we have for the interactions.
+We're dealing with a dataset of a reasonable size, while it still represents much more data than could be handled by hand for sure. Let's now look at the data we have for the interactions.
 
 ![Distribution of interactions per user](readme_images/distribution_interactions_per_user.png)
 
@@ -36,7 +53,7 @@ Another couple of key metrics:
 
 We see that the distribution of interactions are positively skewed, with users having up to 385 interactions with reading materials!
 
-Let's now look at the data we have for the items. The first thing to do was to perform a bit of data cleaning by:
+Let's now focus on the data we have for the items. The first thing to do was to perform a bit of data cleaning by:
 * Extracting the first valid ISBN from the 'ISBN Valid' column.
 * Cleaning the titles as they had a trailing '/', which also supports our data enhancing.
 * Cleaning the authors from birth and death years to ensure a consistent data formatting.
@@ -180,18 +197,9 @@ _**[Insert table: highlight best combo]**_
 
 ## Example recommendations
 
-Let's pick a user at random and see what the recommender system outputs. Here below is shown the recommendations for user 0 as we formatted it in our user interface.
+Let's pick a user at random and see what the recommender system outputs. Here below is shown the recommendations for User 0 as we formatted it in our user interface.
 
 ![](readme_images/Recs1.png)
 ![Example recommendations for user 0](readme_images/Recs2.png)
 
-If we compare that with 5 books chosen at random that the user had previously read, we see that the recommender makes some meaningful ones. For instance
-
-![Previously read books](readme_images/Previously_borrowed.png)
-
-
-
-<!-- * Which is the best model?
-* Show examples of recommendations for some users. Do they align with the users' history of book rentals? Report some examples of “good” predictions, and some "bad" predictions. Do they make sense?
-* Use data augmentation. There exist several APIs (eg Google Books or ISBNDB) that bring extra data using the ISBN of a book. Additionally, you may use the metadata available for the items (books).
-Have a position on the leaderboard of this competition, with score better than 0.1452. -->
+If we compare that with 5 books chosen at random that the user had previously read, we see that the recommender makes some meaningful ones. For instance, User 0 has already borrowed the book 'Pays Bas', which is about the Netherlands. The fact that our algorithm recommends two guides about Amsterdam shows that it is able to recommend books with a very high similarity. The same applies to the pedagogical books: the user has borrowed a book about having authority in the classroom, so recommendations number 2,3,4,5 and 6 seem highly relevant. Now moving on to recommendations that might not be so relevant. Perhaps, the first recommendation is not so relevant: sure, it is also in the realm of non-fiction, but it is more about how to organise knowledge 

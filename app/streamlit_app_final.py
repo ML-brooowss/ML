@@ -1,7 +1,6 @@
 import streamlit as st
 from data_loader import load_books_data, load_recommendations, load_interactions_data
 import pandas as pd
-from PIL import Image
 
 st.set_page_config(layout="wide")
 
@@ -214,7 +213,7 @@ else:
                     st.markdown(f"**Published**: {book['PublishedDate'] if pd.notnull(book['PublishedDate']) else 'N/A'}")
 
                 with col2:
-                    if st.button(f"❌ Remove", key=f"remove_{book['i']}"):
+                    if st.button("❌ Remove", key=f"remove_{book['i']}"):
                         st.session_state.borrowed_books.remove(book['i'])
                         st.rerun()
 
