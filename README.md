@@ -57,7 +57,7 @@ Another couple of key metrics:
 * The average number of interactions between a user and books is 11
 * The median number of interactions is 6
 
-We see that the distribution of interactions are positively skewed, with users having up to 385 interactions with reading materials!
+We see that the distribution of interactions is positively skewed, with users having up to 385 interactions with reading materials!
 
 Let's now focus on the data we have for the items. The first thing to do was to perform a bit of data cleaning by:
 * Extracting the first valid ISBN from the 'ISBN Valid' column.
