@@ -1,6 +1,7 @@
 import streamlit as st
 from data_loader import load_books_data, load_recommendations, load_interactions_data
 import pandas as pd
+from PIL import Image
 
 st.set_page_config(layout="wide")
 
@@ -127,7 +128,7 @@ else:
 
                         # Borrow Again button BELOW the expander
                         if book['i'] not in st.session_state.borrowed_books:
-                            if st.button(f"📚 Borrow Again: {title}", key=f"borrow_again_{book['i']}"):
+                            if st.button(f"📚 Borrow again: {title}", key=f"borrow_again_{book['i']}",use_container_width=True):
                                 st.session_state.borrowed_books.append(book['i'])
                                 st.success(f"Added '{title}' to your borrow basket!")
 
@@ -189,7 +190,7 @@ else:
 
                             # Borrow button BELOW the expander
                             if book['i'] not in st.session_state.borrowed_books:
-                                if st.button(f"📚 Borrow: {book['title_clean']}", key=f"borrow_{book['i']}"):
+                                if st.button(f"📚 Borrow: {book['title_clean']}", key=f"borrow_{book['i']}",use_container_width=True):
                                     st.session_state.borrowed_books.append(book['i'])
                                     st.success(f"Added '{book['title_clean']}' to your borrow basket!")
 
@@ -199,17 +200,24 @@ else:
             borrowed_books_df = df_books[df_books["i"].isin(st.session_state.borrowed_books)]
 
             for _, book in borrowed_books_df.iterrows():
-                st.markdown(f"### {book['title_clean']}")
-                img_url = book["image"]
-                image_height = 100
+                col1, col2 = st.columns([3, 1])
 
-                if pd.notnull(img_url):
-                    st.image(img_url, use_container_width=False, width=150)
-                else:
-                    st.write("No image available")
+                with col1:
+                    st.markdown(f"### {book['title_clean']}")
+                    img_url = book["image"]
+                    if pd.notnull(img_url):
+                        st.image(img_url, use_container_width=False, width=150)
+                    else:
+                        st.write("No image available")
 
-                st.markdown(f"**Author**: {book['author_clean'] if pd.notnull(book['author_clean']) else 'Unknown'}")
-                st.markdown(f"**Published**: {book['PublishedDate'] if pd.notnull(book['PublishedDate']) else 'N/A'}")
+                    st.markdown(f"**Author**: {book['author_clean'] if pd.notnull(book['author_clean']) else 'Unknown'}")
+                    st.markdown(f"**Published**: {book['PublishedDate'] if pd.notnull(book['PublishedDate']) else 'N/A'}")
+
+                with col2:
+                    if st.button(f"❌ Remove", key=f"remove_{book['i']}"):
+                        st.session_state.borrowed_books.remove(book['i'])
+                        st.rerun()
+
                 st.markdown("---")
 
             if st.button("✅ Checkout"):
@@ -229,17 +237,145 @@ else:
 
     with tab3:
         st.title("📊 About This Recommender")
-        st.header("Exploratory Data Analysis")
-        st.markdown("""
-            - Dataset size: ...
-            - Most read genres: ...
-            - Average ratings: ...
-            - User engagement patterns: ...
+        st.markdown("### 🔍 Overview")
+        st.write(
+            """We developed a book recommendation system using **collaborative filtering**, **content-based filtering**, and a **hybrid approach**, leveraging both interaction data and enriched metadata. The best performing model was the hybrid one, with a combination of a collaborative and 3 content-based filtering models. Models were evaluated using **Precision@10** and **Recall@10**."""
+        )
+        st.markdown("### 🧠 1. Recommendation Algorithms")
+
+        st.markdown(
+            """
+        We implemented several recommendation algorithms to enhance the user experience:
+
+        - **Collaborative Filtering**: Utilizes user-item interactions to recommend items.
+        - **Content-Based Filtering**: Recommends items similar to those a user liked in the past.
+        - **Hybrid Model**: Combines both approaches for improved accuracy.
+
+        If you're interested in how these algorithms work, please check the sections below.
+        """
+        )
+
+        with st.expander("1. Collaborative Filtering (User/User & Item/Item)"):
+            st.markdown("""
+            **User-Based CF:**
+            - Based on users with similar interaction history
+            - Similarity: Cosine
+            - Optimal k: 70
+
+            **Item-Based CF:**
+            - Based on items with similar users
+            - Similarity: Cosine (Pearson skipped for implicit data)
+            - Optimal k: 70
+            """)
+
+        with st.expander("2. Content-Based Filtering"):
+            st.markdown("""
+            **TF-IDF**:
+            - Text → sparse vector
+            - Captures surface-level similarity (keywords)
+
+            **BERT**:
+            - Text → dense vector
+            - Captures semantic meaning/context
+
+            **Google Embeddings API**:
+            - Similar to BERT but cloud-hosted
+            """)
+
+        with st.expander("3. Hybrid Model"):
+            st.markdown("""
+            Combined similarities:
+            ```python
+            hybrid_sim = a * tfidf_sim + b * item_cf_sim + c * google_sim + d * bert_sim
+            ```
+            - Tuned weights using simplified grid search
+            - Highest performance with BERT + Google + Item-CF
+            """)
+
+        st.markdown("---")
+        st.markdown("### 📊 Evaluation Metrics")
+
+        # Replace with your actual values
+        st.markdown("""**Evaluation Metrics**: Here is an overview of the Precision@10 and Recall@10 metrics that evaluate the performance of our recommendation algorithms. These metrics help us understand how well our models are performing in terms of recommending relevant items to users. Precision@10 indicates the proportion of recommended items that are relevant out of all recommended items, while Recall@10 indicates the proportion of relevant items that are recommended out of all relevant items. A higher value for both metrics indicates better performance.""")
+        table_data = {
+            "Model": [
+                "User-User CF",
+                "Item-Item CF",
+                "TF-IDF (Content)",
+                "BERT (Content)",
+                "Google API Embeddings",
+                "Hybrid (CF + BERT + API)",
+                "Hybrid (CF + TF-IDF + API)",
+                "Hybrid (CF + TF-IDF + BERT + API)"
+            ],
+            "Precision@10": [
+                "0.0612",
+                "0.0585",
+                "0.0149",
+                "0.1760",
+                "0.0480",
+                "0.0630",
+                "0.0630",
+                "0.0623"
+            ],
+            "Recall@10": [
+                "0.3167",
+                "0.2820",
+                "0.0910",
+                "0.1760",
+                "0.2700",
+                "0.2990",
+                "0.3000",
+                "0.3220"
+            ]
+        }
+        df = pd.DataFrame(table_data)
+        st.dataframe(df, use_container_width=True)
+
+        st.markdown("---")
+        st.markdown("### 🧪 2. Overview of our training data")
+
+        st.subheader("Interactions Dataset")
+        st.markdown("""The data we use for this recommender system is the very interactions that our library had with, you its customers! Here are a few statistics to understand the data we are working with:
+        - **Total Interactions**: 87,047  
+        - **Unique Users**: 7,838  
+        - **Unique Items**: 15,291  
+        - **Average Interactions/User**: 11  
+        - **Median Interactions/User**: 6  
+        - Distribution is positively skewed (up to 385 interactions/user, you go, book worm!).
         """)
 
-        st.write("This plot shows genre popularity among users...")
+        # Show image of interactions per user
+        st.image("readme_images/distribution_interactions_per_user.png", caption="Distribution of Interactions per User")
 
-        st.header("How Recommendations Work")
+        st.subheader("Items Dataset")
         st.markdown("""
-            We used a collaborative filtering model that...
+        - Initial missing values: ~5% ISBNs, 15% Authors, 17% Subjects.
+        - Metadata cleaned:
+        - Extracted first valid ISBN
+        - Removed slashes from titles
+        - Cleaned author names
+        """)
+
+        st.image("readme_images/non_missing_data_plot.png", caption="Original vs. Enhanced Non-Missing Data")
+
+        st.markdown("### 🔬 Data Enhancing")
+        st.markdown("""Here are the steps we took to enhance our data and make it more useful for our recommender system:
+        **Using Google Books API & ISBNDB:**
+        - Filled missing entries: Description, Publisher, Subjects, Language, Pub Date
+        - Added links: Google Canonical link & Book Cover
+        - Priority order for merging: Original > Google > ISBNDB
+
+        **BERTopic Topic Modeling:**
+        - Extracted 25 semantic topics using BERT + UMAP
+        """)
+
+        st.image("readme_images/reduced_topic_distribution.png", caption="Reduced Topic Distributions")
+
+        st.markdown("### 💬 Embeddings")
+        st.markdown("""Behind our top-performing models, we used embeddings to capture the meaning of the text. Embeddings are numerical representation of texts (vectors) that capture meaning, and in the case of BERT and the Gemini model, also capture context. Here are the details of the embedding models we used:
+        **Using Google API & BERT:**
+        - Generated embeddings for a combination of book title, descriptions, authors, publication date, and subjects. This trial and error approach was used to find the best combination of features to generate the embeddings that would capture meaning in the most relevant way for our recommender system.
+        - Captured semantic meaning and context
+        - Enhanced content-based recommendations by incorporating meaning through embeddings
         """)

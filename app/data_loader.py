@@ -8,7 +8,7 @@ def load_books_data():
 
 @st.cache_data
 def load_recommendations():
-    df = pd.read_csv("linne_recommendations.csv")
+    df = pd.read_csv("hybrid_recommendations.csv")
     return df.set_index("user_id")["recommendation"].to_dict()
 
 @st.cache_data

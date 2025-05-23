@@ -1,15 +1,6 @@
 # ML
-Kaggle competition - git repository 
-🚚 DELIVERABLES
 
-(One). A project GitHub page. The readme.md is your report. There, in addition to other things, report the following table. Do hyper-parameter optimization to find the best solution. Your code should justify your results. (Note, to fill in this table, you have to use the train test and cross-validation, since only there you know the true labels).
-
-user-user CF	item-item CF	Any other technique
-Precision@10			
-Recall@10			
-* Report your Exploratory Data Analysis (EDA) on the interactions data and the items metadata.
-
-## 📊 Datasets Overview
+## 📊 Datasets Overview and EDA
 
 | Metric              | Count   |
 |---------------------|--------:|
@@ -157,11 +148,11 @@ Have a position on the leaderboard of this competition, with score better than 0
     <li><strong>Example</strong>: Again, we create a concatenated string: “Harry Potter and the Philosopher's Stone J.K. Rowling Bloomsbury”. Instead of counting each word, BERT processes the entire sentence and understands that “Harry Potter and the Philosopher's Stone” is a title, “J.K. Rowling” is an author, and “Bloomsbury” is an organization. It doesn’t rely on exact matches and can understand that “Bloomsbury” and “BiggerPockets” are both major publishers.</li>
   </ul>
 
-  <h4>Google Embedding API</h4>
+  <h4>Google Gemini Embeddings</h4>
   <ul>
-    <li><strong>What</strong>: A cloud-based API that produces semantic embeddings from text.</li>
-    <li><strong>How</strong>: Uses pretrained large language models (similar to BERT).</li>
-    <li><strong>Use Case</strong>: Easy to integrate and computationally efficient.</li>
+    <li><strong>What</strong>: The <code>gemini-embedding-001</code> model, accessed through a cloud-based API that produces semantic embeddings from text. This model is currently leading the <a href="https://huggingface.co/spaces/mteb/leaderboard" target="_blank">Huggingface MTEB Embedding Leaderboard</a>, a reference when it comes to embedding models.</li>
+    <li><strong>How</strong>: Uses pretrained large language models and transformer architectures, similar to BERT and more advanced.</li>
+    <li><strong>Use Case</strong>: Most advanced embedding model. Easy to integrate and computationally efficient locally.</li>
   </ul>
 
   <h2>3. Hybrid Recommender System</h2>
