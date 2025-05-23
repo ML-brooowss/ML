@@ -2,7 +2,7 @@
 A machine learning project by Amélie Madrona & Linne Verhoeven.
 
 ## Table of Contens
-1. [Subheading 1](#subheading-1)
+1. [Introduction](#Introduction)
 2. [Subheading 2](#subheading-2)
 3. [Subheading 3](#sub-heading-3)
 
