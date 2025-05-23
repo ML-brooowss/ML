@@ -1,7 +1,7 @@
 # Book Recommendation System: Final Report
 A machine learning project by Amélie Madrona & Linne Verhoeven. <br>
 For interactive learning on this project, check-out our video on Youtube: https://youtu.be/GcgB8V5QjHA?si=deK6RG9Pg3uF-wZ4. 
-And please click [here](https://bookrecommenderberne.streamlit.app) to access our beautiful interface. In case the link doesn't work because the app has started hibernating, use [this link]() instead.
+And please click [here](https://bookrecommenderberne.streamlit.app) to access our beautiful interface. In case the link doesn't work because the app has started hibernating, use [this link](https://bernrecommenderbackup.streamlit.app) instead.
 
 ## Table of Contents  
 [Introduction](#introduction)  
