@@ -76,6 +76,8 @@ How could we possibly remedy this and enhance the data we have access to?
 
 ## Data enhancing 
 
+We used APIs to extract more data about the items that are part of the library.
+
 ### Google Books API
 
 The data enhancing for this step was composed of two parts. First, looking up books based on their first valid ISBN to extract the following missing entries:
