@@ -64,7 +64,7 @@ Let's now focus on the data we have for the items. The first thing to do was to 
 * Cleaning the titles as they had a trailing '/', which also supports our data enhancing.
 * Cleaning the authors from birth and death years to ensure a consistent data formatting.
 
-The next step was to look at is how complete our dataset is, or how much missing data it has. 
+The next step was to look at how complete our dataset is, or how much missing data it has. 
 
 ![Non-missing values per source](readme_images/overview_missing_data.png)
 
